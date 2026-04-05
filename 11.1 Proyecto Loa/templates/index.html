@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>LOA Hogar</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+</head>
+<script>
+
+window.addEventListener("scroll", function () {
+
+    const header = document.querySelector(".header");
+    let scroll = window.scrollY;
+
+    let maxScroll = 200;
+
+    if (scroll <= 0) {
+        // ESTADO INICIAL LIMPIO
+        header.style.background = "#66ff00";
+        header.style.backdropFilter = "none";
+        return;
+    }
+
+    // cálculo progresivo
+    let opacity = Math.min(scroll / maxScroll, 1);
+
+    header.style.background = `rgba(102,255,0, ${0.2 + opacity * 0.5})`;
+    header.style.backdropFilter = "blur(12px)";
+
+});
+
+</script>
+<body>
+
+    <!-- ===== HEADER ===== -->
+    <header class="header">
+        <div class="container header-container">
+
+            <!-- Logo -->
+            <div class="logo">
+                <img src="{{ url_for('static', filename='img/logo_transparente.png') }}" alt="LOA">
+            </div>
+
+            <!-- Menu -->
+            <nav class="nav">
+                <a href="#">Inicio</a>
+                <a href="#planes-tabs">Planes</a>
+                <a href="#soporte">Soporte</a>
+                <a href="#registro">Registrate</a>
+                <a href="/clientes">Gestión de Clientes</a> 
+                {% if session.get('rol') == 'Admin' %}
+                    <a href="/clientes" class="btn-admin">Admin</a>
+                {% endif %}
+            </nav>
+
+            <!-- Iconos -->
+            <div class="icons">
+                <span>
+                    <img src="../static/img/icono-hombre.png" alt="" height="30px" id="btnLogin" title="Entrar al sistema">
+                </span>
+                <span><img src="../static/img/icono-lupa.png" alt="" height="30px"></span>
+                <span><img src="../static/img/icono-carrito.png" alt="" height="30px"></span>
+            </div>
+
+        </div>
+    </header>
+    <!-- ===== HERO ===== -->
+    <section class="hero">
+
+        <div class="hero-content container">
+
+            <!-- Texto -->
+            <h1 class="hero-title">
+                <span class="line line1">Conéctate</span><br>
+                <span class="line line2">Mejor y vive sin</span><br>
+                <span class="line line3">Interrupciones</span>
+            </h1>
+
+            <!-- Formulario -->
+            <div class="hero-form">
+                <form>
+                    <input type="text" placeholder="Nombre y Apellido" required>
+                    <input type="text" placeholder="Número Telefónico" required>
+
+                    <label class="checkbox">
+                        <input type="checkbox">
+                        He leído y acepto las Políticas de Privacidad
+                    </label>
+
+                    <button type="submit">LLÁMAME</button>
+                </form>
+            </div>
+
+        </div>
+
+    </section>
+
+    <div class="planes-tabs" id="planes-tabs">
+        <button class="tab active">INTERNET</button>
+        <button class="tab">DÚOS</button>
+    </div>
+
+    <!-- ===== PLANES ===== -->
+    <div class="planes-grid" id="planes-grid">
+
+        <!-- PLAN HOGAR -->
+        <div class="plan-card pro">
+            <div class="badge">POPULAR</div>
+
+            <div class="plan-header">
+                <h3>PLAN HOGAR</h3>
+                <h1>1000 Mbps</h1>
+            </div>
+
+            <div class="plan-body">
+                <p class="old-price">S/.79</p>
+
+                <div class="price">
+                    <span>S/.</span>44<sup>00</sup>
+                </div>
+
+                <p class="promo">X2 Meses</p>
+
+                <ul>
+                    <li><span class="check"></span> 100% Fibra Óptica</li>
+                    <li><span class="check"></span> Velocidad Simétrica</li>
+                    <li><span class="check"></span> Instalación gratis</li>
+                    <li><span class="check"></span> 1000Mbps x 6 meses</li>
+                </ul>
+
+                <button>QUIERO ESTE PLAN</button>
+
+                <p class="nota">
+                    Tarifa normal S/. 79.00, velocidad regular 600Mbps
+                </p>
+            </div>
+        </div>
+
+        <!-- PLAN AVANZADO -->
+        <div class="plan-card pro">
+            <div class="badge">POPULAR</div>
+
+            <div class="plan-header">
+                <h3>PLAN AVANZADO</h3>
+                <h1>1000 Mbps</h1>
+            </div>
+
+            <div class="plan-body">
+                <p class="old-price">S/.99</p>
+
+                <div class="price">
+                    <span>S/.</span>49<sup>00</sup>
+                </div>
+
+                <p class="promo">X2 Meses</p>
+
+                <ul>
+                    <li><span class="check"></span> 100% Fibra Óptica</li>
+                    <li><span class="check"></span> Velocidad Simétrica</li>
+                    <li><span class="check"></span> Instalación gratis</li>
+                    <li><span class="check"></span> 1000Mbps x 6 meses</li>
+                </ul>
+
+                <button>QUIERO ESTE PLAN</button>
+
+                <p class="nota">
+                    Tarifa normal S/. 99.00, velocidad regular 800Mbps
+                </p>
+            </div>
+        </div>
+
+        <!-- PLAN PLUS -->
+        <div class="plan-card pro">
+            <div class="badge">POPULAR</div>
+
+            <div class="plan-header">
+                <h3>PLAN PLUS</h3>
+                <h1>1000 Mbps</h1>
+            </div>
+
+            <div class="plan-body">
+                <p class="old-price">S/.129</p>
+
+                <div class="price">
+                    <span>S/.</span>64<sup>00</sup>
+                </div>
+
+                <p class="promo">Mensual</p>
+
+                <ul>
+                    <li><span class="check"></span> 100% Fibra Óptica</li>
+                    <li><span class="check"></span> Velocidad Simétrica</li>
+                    <li><span class="check"></span> Instalación gratis</li>
+                    <li><span class="check"></span> Velocidad x siempre</li>
+                </ul>
+
+                <button>QUIERO ESTE PLAN</button>
+
+                <p class="nota">
+                    Tarifa normal S/. 129.00, velocidad regular 1000Mbps
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== BENEFICIOS ===== -->
+    <section class="beneficios">
+
+        <div class="container">
+
+            <h2 class="titulo-beneficios">
+                CARACTERÍSTICAS Y BENEFICIOS DE NUESTRO SERVICIO
+            </h2>
+
+            <div class="beneficios-grid">
+
+                <!-- ITEM 1 -->
+                <div class="beneficio verde">
+                    <div class="icono">
+                        📡
+                    </div>
+                    <h3>100% Fibra Óptica</h3>
+                    <p>
+                        Infraestructura estable, garantizada al 95% de la velocidad contratada,
+                        menor latencia, con sensores de ciberseguridad
+                    </p>
+                </div>
+
+                <!-- ITEM 2 -->
+                <div class="beneficio azul">
+                    <div class="icono">
+                        ⏱️
+                    </div>
+                    <h3>Velocidad asegurada</h3>
+                    <p>
+                        Velocidad garantizada, estable y sin cortes imprevistos,
+                        infraestructura preparada para streaming, juegos, multidatos
+                    </p>
+                </div>
+
+                <!-- ITEM 3 -->
+                <div class="beneficio morado">
+                    <div class="icono">
+                        ⚙️
+                    </div>
+                    <h3>Simetría y estabilidad</h3>
+                    <p>
+                        Nuestro servicio garantiza, la misma velocidad de subida y bajada
+                        garantizada al 95% de la velocidad contratada
+                    </p>
+                </div>
+
+                <!-- ITEM 4 -->
+                <div class="beneficio azul">
+                    <div class="icono">
+                        📶
+                    </div>
+                    <h3>WIFI-6 + Dispositivos</h3>
+                    <p>
+                        Tecnología preparada para soportar más de 30 dispositivos sin degradar la señal
+                        además podrás administrar el contenido
+                    </p>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- ===== SOPORTE WHATSAPP ===== -->
+    <section class="soporte" id="soporte">
+
+        <div class="container soporte-content">
+
+            <!-- IMAGEN -->
+            <div class="soporte-img">
+                <img src="{{ url_for('static', filename='img/whatsapp.png') }}" alt="WhatsApp">
+            </div>
+
+            <!-- TEXTO -->
+            <div class="soporte-texto">
+
+                <h2>
+                    Soporte Técnico <br>
+                    por Whatsapp <br>
+                    las 24 horas del día
+                </h2>
+
+                <p>
+                    Nuestros especialistas del centro de atención y nuestro equipo técnico
+                    están listos para ayudarte
+                </p>
+
+                <button class="btn-soporte">
+                    Solicita servicio Técnico Aquí
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- ===== REGISTRO + FAQ ===== -->
+    <section class="registro" id="registro">
+
+        <div class="container">
+
+            <!-- FILA SUPERIOR -->
+            <div class="registro-top">
+
+                <!-- IMAGEN -->
+                <div class="registro-img">
+                    <img src="{{ url_for('static', filename='img/registro.png') }}" alt="Registro">
+                </div>
+
+                <!-- TEXTO -->
+                <div class="registro-texto">
+                    <h2>SOLICITA AQUÍ TU INTERNET RÁPIDO Y SEGURO</h2>
+
+                    <a href="/registro" class="btn-registro">REGÍSTRATE</a>
+                </div>
+
+            </div>
+
+            <!-- FAQ ABAJO -->
+            <div class="faq">
+
+                <div class="faq-item">
+                    <div class="faq-question">+ ¿Cuántos años de experiencia tiene LOA?</div>
+                    <div class="faq-answer">Tenemos más de 10 años brindando servicio de alta calidad.</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">+ ¿Cuál es la cobertura?</div>
+                    <div class="faq-answer">Cobertura en múltiples zonas con expansión constante.</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">+ ¿Instalación tiene costo?</div>
+                    <div class="faq-answer">Actualmente contamos con instalación gratuita.</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">+ ¿Tiempo de instalación?</div>
+                    <div class="faq-answer">Entre 24 y 48 horas dependiendo la zona.</div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+
+        <div class="container footer-content">
+
+            <!-- BLOQUE 1 -->
+            <div class="footer-col logo-col">
+
+                <img src="{{ url_for('static', filename='img/logo_transparente.png') }}" class="logo-footer-img">
+                
+                <p class="sub">HOGAR</p>
+
+                <h4>FLUYE SIN LIMITES</h4>
+
+                <p class="desc">
+                    Únase a nuestro boletín <br>
+                    Obtén más información de nuestros servicios y promociones
+                    más una amplia variedad de datos técnicos para un mayor aprendizaje
+                </p>
+
+                <input type="email" placeholder="Ingresa tu correo">
+                <button class="btn-footer">Recibir promociones</button>
+
+            </div>
+
+            <!-- BLOQUE 2 -->
+            <div class="footer-col">
+
+                <h4>INFORMACIÓN PARA USUARIOS</h4>
+
+                <ul>
+                    <li>Promociones</li>
+                    <li>Solicitud de suspensiones y bajas</li>
+                    <li>Solicitud de reclamos</li>
+                    <li>Información de planes</li>
+                    <li>Información de abonados y usuarios</li>
+                </ul>
+
+            </div>
+
+            <!-- BLOQUE 3 -->
+            <div class="footer-col">
+
+                <h4>LEGALES</h4>
+
+                <ul>
+                    <li>Política de protección de datos personales</li>
+                    <li>Términos y Condiciones del sitio web</li>
+                </ul>
+
+            </div>
+
+            <!-- BLOQUE 4 -->
+            <div class="footer-col">
+
+                <h4>ATENCIÓN AL CLIENTE</h4>
+
+                <p class="telefono">+511 932 311 257</p>
+                <p>contacto@loahogar.site</p>
+
+            </div>
+
+        </div>
+
+        <!-- PAGOS -->
+        <div class="footer-pagos">
+
+            <h4>NUESTROS MEDIOS DE PAGO</h4>
+
+            <div class="pagos-icons">
+                <span>💳</span>
+                <span>💳</span>
+                <span>💳</span>
+                <span>💳</span>
+                <span>💳</span>
+            </div>
+
+        </div>
+
+        <!-- COPYRIGHT -->
+        <div class="footer-copy">
+            Copyright© 2026 Loa Hogar - Todos los derechos reservados
+        </div>
+
+    </footer>
+
+    <script>
+        const preguntas = document.querySelectorAll(".faq-question");
+
+        preguntas.forEach(p => {
+            p.addEventListener("click", () => {
+                const respuesta = p.nextElementSibling;
+
+                respuesta.style.display =
+                    respuesta.style.display === "block" ? "none" : "block";
+            });
+        });
+    </script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+        const iconoLogin = document.getElementById("btnLogin");
+        const modal = document.getElementById("loginModal");
+        const cerrar = document.getElementById("cerrarModal");
+
+        const linkRegistro = document.querySelector(".link-registro");
+        const registroModal = document.getElementById("registroModal");
+
+        iconoLogin.addEventListener("click", () => {
+            console.log("CLICK OK");
+            modal.style.display = "flex";
+        });
+
+        if (cerrar) {
+            cerrar.addEventListener("click", () => {
+                modal.style.display = "none";
+            });
+        }
+
+        if (linkRegistro) {
+            linkRegistro.addEventListener("click", (e) => {
+                e.preventDefault();
+                modal.style.display = "none";
+                registroModal.style.display = "flex";
+            });
+        }
+
+        const passwordInput = document.getElementById("passwordInput");
+        const nivel = document.getElementById("nivelPassword");
+
+        passwordInput.addEventListener("input", () => {
+            const pass = passwordInput.value;
+
+            let condiciones = 0;
+
+            if (pass.length >= 8) condiciones++;
+            if (/[A-Z]/.test(pass)) condiciones++;
+            if (/[a-z]/.test(pass)) condiciones++;
+            if (/[0-9]/.test(pass)) condiciones++;
+            if (/[@$%&]/.test(pass)) condiciones++;
+
+            let texto = "";
+            let color = "";
+
+            if (condiciones <= 2) {
+                texto = "Fácil";
+                color = "#ef4444";
+            } else if (condiciones === 3) {
+                texto = "Moderado";
+                color = "#f59e0b";
+            } else if (condiciones === 4) {
+                texto = "Fuerte";
+                color = "#22c55e";
+            } else if (condiciones === 5) {
+                texto = "Imposible";
+                color = "#16a34a";
+            }
+
+            nivel.textContent = "Seguridad: " + texto;
+            nivel.style.color = color;
+        });
+
+        const rePasswordInput = document.getElementById("rePasswordInput");
+
+        rePasswordInput.addEventListener("input", () => {
+            const pass = passwordInput.value;
+            const repass = rePasswordInput.value;
+
+            if (repass.length === 0) {
+                rePasswordInput.style.background = "";
+                rePasswordInput.style.color = "";
+                return;
+            }
+
+            if (pass === repass) {
+                // ✅ VERDE
+                rePasswordInput.style.background = "#22c55e";
+                rePasswordInput.style.color = "#ffffff";
+            } else {
+                // ❌ ROJO
+                rePasswordInput.style.background = "#ef4444";
+                rePasswordInput.style.color = "#ffffff";
+            }
+        });
+
+        const verPassword = document.getElementById("verPassword");
+
+        verPassword.addEventListener("change", () => {
+            if (verPassword.checked) {
+                passwordInput.type = "text";
+                rePasswordInput.type = "text";
+            } else {
+                passwordInput.type = "password";
+                rePasswordInput.type = "password";
+            }
+        });
+
+        const cancelarRegistro = document.getElementById("cancelarRegistro");
+        const cerrarRegistro = document.getElementById("cerrarRegistro");
+
+        if (cancelarRegistro) {
+            cancelarRegistro.addEventListener("click", () => {
+                registroModal.style.display = "none";
+                modal.style.display = "flex"; // vuelve al login
+            });
+        }
+
+        if (cerrarRegistro) {
+            cerrarRegistro.addEventListener("click", () => {
+                registroModal.style.display = "none";
+            });
+        }
+
+        const btnGrabar = document.getElementById("btnGrabar");
+
+        const inputs = document.querySelectorAll("#registroModal input");
+
+        function validarFormulario() {
+            let completo = true;
+            let passwordValido = false;
+
+            inputs.forEach(input => {
+                if (input.type !== "checkbox" && input.value.trim() === "") {
+                    completo = false;
+                }
+            });
+
+            // 🔐 Validar nivel de password
+            const pass = passwordInput.value;
+
+            let condiciones = 0;
+            if (pass.length >= 8) condiciones++;
+            if (/[A-Z]/.test(pass)) condiciones++;
+            if (/[a-z]/.test(pass)) condiciones++;
+            if (/[0-9]/.test(pass)) condiciones++;
+            if (/[@$%&]/.test(pass)) condiciones++;
+
+            if (condiciones >= 4) {
+                passwordValido = true;
+            }
+
+            inputs.forEach(input => {
+                if (input.type !== "checkbox" && input.value.trim() === "") {
+                    completo = false;
+                }
+            });
+
+            if (completo && passwordValido) {
+                btnGrabar.disabled = false;
+                btnGrabar.classList.add("activo");
+            } else {
+                btnGrabar.disabled = true;
+                btnGrabar.classList.remove("activo");
+            }
+        }
+
+        const depUser = document.getElementById("dep_usuario");
+        const provUser = document.getElementById("prov_usuario");
+        const distUser = document.getElementById("dist_usuario");
+
+        // Cargar departamentos
+        fetch('/departamentos')
+            .then(res => res.json())
+            .then(data => {
+                depUser.innerHTML = '<option value="">Departamento</option>';
+                data.forEach(d => {
+                    depUser.innerHTML += `<option value="${d[0]}">${d[1]}</option>`;
+                });
+            });
+
+        // Cambio departamento
+        depUser.addEventListener("change", function () {
+
+            provUser.innerHTML = '<option value="">Provincia</option>';
+            distUser.innerHTML = '<option value="">Distrito</option>';
+
+            fetch(`/provincias/${this.value}`)
+                .then(res => res.json())
+                .then(data => {
+                    data.forEach(p => {
+                        provUser.innerHTML += `<option value="${p[0]}">${p[1]}</option>`;
+                    });
+                });
+        });
+
+        // Cambio provincia
+        provUser.addEventListener("change", function () {
+
+            distUser.innerHTML = '<option value="">Distrito</option>';
+
+            fetch(`/distritos/${this.value}`)
+                .then(res => res.json())
+                .then(data => {
+                    data.forEach(d => {
+                        distUser.innerHTML += `<option value="${d[0]}">${d[1]}</option>`;
+                    });
+                });
+        });
+
+        // Escuchar cambios en todos los inputs
+        inputs.forEach(input => {
+            input.addEventListener("input", validarFormulario);
+        });
+
+    });
+    </script>
+
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span id="cerrarModal">&times;</span>
+
+            <h3>Ingreso al sistema</h3>
+
+            <input type="text" placeholder="Usuario">
+            <input type="password" placeholder="Password">
+
+            <a href="#" class="link-secundario">¿Olvidé mi password?</a>
+
+            <button>Ingresar</button>
+
+            <a href="#" class="link-registro">Quiero registrarme</a>
+        </div>
+    </div>
+    <div id="registroModal" class="modal">
+        <div class="modal-content registro">
+
+            <h3>Crear cuenta</h3>
+
+            <form method="POST" action="/registrar_usuario">
+
+                <!-- 🔹 DATOS PERSONALES -->
+                <h4 class="seccion-titulo">Datos personales</h4>
+
+                <div class="form-grid">
+                    <input type="text" name="dni" placeholder="DNI">
+                    <input type="text" name="nombre" placeholder="Nombre">
+                    <input type="text" name="apellidos" placeholder="Apellido">
+                    <input type="email" name="correo" placeholder="Correo">
+                    <input type="date" name="FechaNacim" placeholder="Fecha de nacimiento">
+
+                    <input type="text" name="celular" placeholder="Celular">
+                    <input type="text" name="usuario" placeholder="Usuario">
+
+                    <div class="row-2">
+                        <input type="password" name="password" id="passwordInput" placeholder="Password">
+                        <input type="password" name="repassword" id="rePasswordInput" placeholder="Repetir Password">
+                        <div class="password-inline-box">
+                            <label class="check-pass">
+                                <input type="checkbox" id="verPassword">                    
+                            </label>
+                            <small class="password-help-inline">
+                                Ver 8+ carac, May, min, num, @$%&
+                            </small>
+                        </div>
+                    </div>
+                    <div class="password-box">
+                        <small class="password-help">
+                            El password debe tener mayúscula, minúscula, número, carácter especial (@$%&) y mínimo 8 caracteres
+                        </small>
+                        <div id="nivelPassword" class="nivel-pass">
+                            Seguridad: -
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- 🔹 DIRECCIÓN -->
+                <h4 class="seccion-titulo" >Dirección</h4>
+
+                <div class="form-grid">
+                    <input type="text" placeholder="Dirección" name="direccion" >
+                    <select name="departamento_id" id="dep_usuario">
+                        <option value="">Departamento</option>
+                    </select>
+
+                    <select name="provincia_id" id="prov_usuario">
+                        <option value="">Provincia</option>
+                    </select>
+
+                    <select name="distrito_id" id="dist_usuario">
+                        <option value="">Distrito</option>
+                    </select>
+                </div>
+
+                <div class="g-recaptcha" data-sitekey="TU_SITE_KEY"></div>
+
+                <!-- 👇 fuera del grid -->
+                <div class="acciones">
+                    <button id="btnGrabar" disabled>Grabar</button>
+                    <button id="cancelarRegistro">Cancelar</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+    
+
+     
+
+</body>
+</html>

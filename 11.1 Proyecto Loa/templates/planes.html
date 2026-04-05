@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Selecciona tu Plan</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+
+<body>
+
+<section class="planes-bg">
+
+    <div class="overlay"></div>
+
+    <div class="planes-content">
+
+        <section class="planes">
+
+            <div class="container-planes">
+
+                <h2 class="titulo-planes">Elige tu Plan</h2>
+
+                <form method="POST" action="/seleccionar_plan" class="form-planes">
+
+                    <input type="hidden" name="idcliente" value="{{ idcliente }}">
+
+                    <div class="planes-grid">
+
+                        <!-- PLAN 1 -->
+                        <label class="plan-card pro">
+                            <input type="radio" name="plan" value="1" required>
+
+                            <div class="plan-header">
+                                <h3>PLAN HOGAR</h3>
+                                <h1>1000 Mbps</h1>
+                            </div>
+
+                            <div class="plan-body">
+                                <p class="old-price">S/.79</p>
+
+                                <div class="price">
+                                    <span>S/.</span>44<sup>00</sup>
+                                </div>
+
+                                <ul>
+                                    <li>✔ Fibra Óptica</li>
+                                    <li>✔ Velocidad Simétrica</li>
+                                    <li>✔ Instalación gratis</li>
+                                </ul>
+                            </div>
+                        </label>
+
+                        <!-- PLAN 2 -->
+                        <label class="plan-card pro">
+                            <input type="radio" name="plan" value="2">
+
+                            <div class="plan-header">
+                                <h3>PLAN AVANZADO</h3>
+                                <h1>1000 Mbps</h1>
+                            </div>
+
+                            <div class="plan-body">
+                                <p class="old-price">S/.99</p>
+
+                                <div class="price">
+                                    <span>S/.</span>49<sup>00</sup>
+                                </div>
+
+                                <ul>
+                                    <li>✔ Fibra Óptica</li>
+                                    <li>✔ Velocidad Simétrica</li>
+                                    <li>✔ Instalación gratis</li>
+                                </ul>
+                            </div>
+                        </label>
+
+                        <!-- PLAN 3 -->
+                        <label class="plan-card pro">
+                            <input type="radio" name="plan" value="3">
+
+                            <div class="plan-header">
+                                <h3>PLAN PLUS</h3>
+                                <h1>1000 Mbps</h1>
+                            </div>
+
+                            <div class="plan-body">
+                                <p class="old-price">S/.129</p>
+
+                                <div class="price">
+                                    <span>S/.</span>64<sup>00</sup>
+                                </div>
+
+                                <ul>
+                                    <li>✔ Fibra Óptica</li>
+                                    <li>✔ Velocidad Simétrica</li>
+                                    <li>✔ Instalación gratis</li>
+                                </ul>
+                            </div>
+                        </label>
+
+                    </div>
+
+                    <br>
+
+                    <button type="submit" class="btn-registro">SIGUIENTE</button>
+
+                </form>
+
+            </div>
+
+        </section>
+
+    </div>
+
+</section>
+
+
+
+</body>
+</html>

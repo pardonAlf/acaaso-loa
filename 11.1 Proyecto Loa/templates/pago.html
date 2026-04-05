@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Pago</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+
+<body>
+
+<div class="checkout-container">
+
+    <div class="checkout-wrapper">
+
+        <!-- IZQUIERDA: PASARELA -->
+        <div class="checkout-card">
+            <!-- ICONO -->
+            <div class="checkout-logo">
+                <img src="../static/img/tarjetas3_transparentes.png" alt="" height="100px" width="200px">
+            </div>
+
+            <h2>Pago Seguro</h2>
+            <p class="orden">Orden #123ABC</p>
+
+            <!-- TARJETA -->
+            <div class="card-box">
+                <input type="text" placeholder="4444 3333 2222 1111">
+
+                <div class="row">
+                    <input type="text" placeholder="MM/AA">
+                    <input type="text" placeholder="CVV">
+                </div>
+
+                <div class="row">
+                    <input type="text" placeholder="Nombre">
+                    <input type="text" placeholder="Apellido">
+                </div>
+            </div>
+
+            <!-- EMAIL -->
+            <input type="email" placeholder="correo@mail.com">
+
+            
+            <!-- BOTÓN -->
+            <button onclick="pagar()" class="btn-pagar">
+                Pagar S/. {{ precio }}
+            </button>
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+function pagar(){
+    window.location.href = "/pago_exito";
+}
+</script>
+
+</body>
+</html>

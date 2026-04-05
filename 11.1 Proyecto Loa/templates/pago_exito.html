@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Pago Completado</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+
+<body>
+
+<div class="pago-ok-container">
+
+    <div class="pago-ok-card">
+
+        <!-- HEADER VERDE -->
+        <div class="pago-ok-header">
+            <div class="check">✔</div>
+            <h2>Su pago se ha completado correctamente</h2>
+        </div>
+
+        <!-- DETALLE -->
+        <div class="pago-ok-body">
+
+            <div class="fila">
+                <span>Número de Orden:</span>
+                <strong>349646148</strong>
+            </div>
+
+            <div class="fila">
+                <span>ID Organización:</span>
+                <strong>AR-IMC013-LACNIC</strong>
+            </div>
+
+            <div class="fila">
+                <span>Nro. Factura:</span>
+                <strong>7444</strong>
+            </div>
+
+            <div class="fila">
+                <span>Importe:</span>
+                <strong>S/. 44</strong>
+            </div>
+
+            <p class="mensaje">
+                A la brevedad recibirá su comprobante de pago en su correo electrónico.<br>
+                Este proceso no tomará más de una hora.
+            </p>
+
+            <p class="gracias">
+                Gracias por confiar en <strong>LOA HOGAR</strong>.
+            </p>
+
+            <a href="/" class="btn-volver">Volver al inicio</a>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

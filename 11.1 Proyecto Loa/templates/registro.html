@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Registro - LOA</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+
+<script>
+
+    document.addEventListener("DOMContentLoaded", function() {
+
+        const form = document.querySelector(".registro-form");
+        const inputs = form.querySelectorAll("input, select");
+        const btn = document.getElementById("btnGuardar");
+        const captchaInput = document.getElementById("captchaInput");
+        const captchaText = document.getElementById("captchaText");
+
+        // GENERAR CAPTCHA
+        function generarCaptcha() {
+            const caracteres = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+            let captcha = "";
+
+            for (let i = 0; i < 5; i++) {
+                captcha += caracteres.charAt(Math.floor(Math.random() * caracteres.length));
+            }
+
+            captchaText.textContent = captcha;
+            return captcha;
+        }
+
+        let captchaActual = generarCaptcha();
+
+        document.getElementById("reloadCaptcha").addEventListener("click", function () {
+            captchaActual = generarCaptcha();
+        });
+
+        // VALIDAR TODO
+        function validarFormulario() {
+
+            let todosLlenos = true;
+
+            inputs.forEach(input => {
+                if (input.value.trim() === "") {
+                    todosLlenos = false;
+                }
+            });
+
+            let captchaCorrecto = captchaInput.value.toUpperCase() === captchaActual;
+
+            if (todosLlenos && captchaCorrecto) {
+                btn.disabled = false;
+            } else {
+                btn.disabled = true;
+            }
+        }
+
+        // ESCUCHAR CAMBIOS
+        inputs.forEach(input => {
+            input.addEventListener("input", validarFormulario);
+            input.addEventListener("change", validarFormulario);
+        });
+
+    });
+</script>
+<script>
+
+document.addEventListener("DOMContentLoaded", function() {
+
+    const dep = document.getElementById("departamento");
+    const prov = document.getElementById("provincia");
+    const dist = document.getElementById("distrito");
+
+    // CARGAR DEPARTAMENTOS
+    fetch('/departamentos')
+        .then(res => res.json())
+        .then(data => {
+            dep.innerHTML = '<option value="" disabled selected hidden>Seleccione Departamento</option>';
+            data.forEach(d => {
+                dep.innerHTML += `<option value="${d[0]}">${d[1]}</option>`;
+            });
+        });
+
+    // CAMBIO DEPARTAMENTO
+    dep.addEventListener("change", function() {
+
+        prov.innerHTML = '<option value="" disabled selected hidden>Seleccione Provincia</option>';
+        dist.innerHTML = '<option value="" disabled selected hidden>Seleccione Distrito</option>';
+
+        fetch(`/provincias/${this.value}`)
+            .then(res => res.json())
+            .then(data => {
+                data.forEach(p => {
+                    prov.innerHTML += `<option value="${p[0]}">${p[1]}</option>`;
+                });
+            });
+    });
+
+    // CAMBIO PROVINCIA
+    prov.addEventListener("change", function() {
+
+        dist.innerHTML = '<option value="" disabled selected hidden>Seleccione Distrito</option>';
+
+        fetch(`/distritos/${this.value}`)
+            .then(res => res.json())
+            .then(data => {
+                data.forEach(d => {
+                    dist.innerHTML += `<option value="${d[0]}">${d[1]}</option>`;
+                });
+            });
+    });
+
+});
+
+
+
+document.addEventListener("DOMContentLoaded", function() {
+
+    const form = document.querySelector(".registro-form");
+
+
+});
+
+ 
+</script>
+
+<body> 
+    <div class="header-reg-app">
+
+        <div class="logo">
+            <a href="/">
+                <img src="{{ url_for('static', filename='img/logo_transparente.png') }}" alt="LOA">
+            </a>
+        </div>
+
+        <div class="menu-reg-app">
+            
+            <a href="/" class="btn-volver">← Volver al inicio</a>
+        </div>
+
+    </div>
+    <section class="registro-page">
+        
+        <div class="registro-container">
+
+            <form class="registro-form" method="POST" action="/guardar_cliente">
+
+                <h2>Registro de Cliente</h2>
+
+                <input type="text" name="nombre" placeholder="Nombre" required>
+                <input type="text" name="apellidos" placeholder="Apellidos" required>
+                <input type="text" name="dni" placeholder="DNI" required>
+                <input type="email" name="correo" placeholder="Correo" required>
+                <input type="text" name="celular" placeholder="Celular" required>
+                <input type="text" name="direccion" placeholder="Dirección" required>
+
+                <!-- UBICACIÓN -->
+                <select name="departamento_id" id="departamento" required>
+                    <option value="" disabled selected hidden>Seleccione Departamento</option>
+                </select>
+
+                <select name="provincia_id" id="provincia" required>
+                    <option value="" disabled selected hidden>Seleccione Provincia</option>
+                </select>
+
+                <select name="distrito_id" id="distrito" required>
+                    <option value="" disabled selected hidden>Seleccione Distrito</option>
+                </select>
+
+                <!-- CAPTCHA -->
+                <div class="captcha">
+                    <span id="captchaText"></span>
+                    <!-- ICONO -->
+                    <span id="reloadCaptcha">🔄</span>
+                    <input type="text" id="captchaInput" placeholder="Escribe el texto">
+                </div>
+
+                <button type="submit" id="btnGuardar" disabled>GRABAR</button>
+
+            </form>
+
+        </div>
+
+    </section> 
+</body>
+
+</html>

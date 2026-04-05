@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestión de Clientes</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+
+<body>
+    <div class="header-app">
+
+        <div class="logo">
+            <a href="/">
+                <img src="{{ url_for('static', filename='img/logo_transparente.png') }}" alt="LOA">
+            </a>
+        </div>
+
+        <div class="menu-app">
+            <a href="/">Inicio</a>
+            <a href="/clientes">Clientes</a>
+        </div>
+
+    </div>
+
+
+    <div class="crm-container">
+
+        <h2>Gestión de Clientes</h2>
+
+        <div class="crm-filtros">
+            <input type="text" id="filtroDni" placeholder="Buscar por DNI">
+            <input type="text" id="filtroNombre" placeholder="Nombre / Apellido">
+            <input type="text" id="filtroCelular" placeholder="Celular">
+            <input type="text" id="filtroDistrito" placeholder="Distrito">
+            <select id="filtroEstado">
+                <option value="">Estado</option>
+                <option value="todos">Todos</option>
+
+                {% for e in estados %}
+                    <option value="{{ e[1] }}">{{ e[1] }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <!-- TABLA -->
+        <div class="crm-tabla">
+
+            <div class="acciones-tabla">
+                <button id="btnDetalle">Detalle</button>
+            </div>
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Cliente</th>
+                        <th>DNI</th>
+                        
+                        <th>Celular</th>
+                        <th>Direccion</th>
+                        <th>Ubicación</th>
+                        <th>Plan</th>
+                        <th>Estado</th>
+                        <th>Usuario</th>
+                    </tr>
+                </thead>
+
+               <tbody>
+
+                    {% for c in clientes %}
+                    <tr 
+                        data-id="{{ c[0] }}"
+                        data-nombre="{{ c[1] }}"
+                        data-apellidos="{{ c[2] }}"
+                        data-dni="{{ c[3] }}"
+                        data-correo="{{ c[4] }}"
+                        data-celular="{{ c[5] }}"
+                        data-direccion="{{ c[6] }}"
+                        data-departamento="{{ c[7] }}"
+                        data-provincia="{{ c[8] }}"
+                        data-distrito="{{ c[9] }}"
+                        data-plan="{{ c[10] }}"
+                        data-estado="{{ c[11] }}"
+                    >
+                        <td>{{ c[0] }}</td>
+
+                        <td class="nombre">
+                            <strong>{{ c[1] }} {{ c[2] }}</strong><br>
+                            <small>{{ c[4] }}</small>
+                        </td>
+
+                        <td class="dni">{{ c[3] }}</td>
+                        
+                        <td class="celular">{{ c[5] }}</td>
+                        <td>{{ c[6] }}</td>
+
+                        <td class="distrito">
+                            <strong>{{ c[9] }}</strong><br>
+                            <small>{{ c[8] }} - {{ c[7] }}</small>
+                        </td>
+
+                        <td>{{ c[10] or '-' }}</td>
+
+                        <td class="estado" data-estado="{{ c[11] }}">
+                            {{ c[11] }}
+                        </td>
+                        <td>{{c[12]}}</td>
+
+                    </tr>
+                    {% endfor %}
+
+                </tbody>
+
+                <div id="panelDetalle" class="modal-detalle">
+                    <h3>Detalle Cliente</h3>
+
+                    <div class="fila-detalle">
+                        <input id="d_dni">
+                        <input id="d_nombre">
+                        <input id="d_apellidos">
+                        <input id="d_nacimiento">
+                    </div>
+
+                    <div class="fila-detalle">
+                        <input id="d_correo">
+                        <input id="d_celular">
+                    </div>
+                    <div class="fila-detalle">
+                        <input id="d_direccion">
+                        <input id="departamento">
+                    </div>
+                    <div class="fila-detalle">
+                        <input id="provincia">
+                        <input id="distrito">
+                    </div>
+                    <div class="acciones-modal">
+                        <button id="btnGuardarDet">Guardar</button>
+                        <button id="btnCancelarDet">Cancelar</button>
+                    </div>
+
+                </div>
+
+            </table>
+            
+                        
+
+        </div>
+
+    </div>
+
+    <script>
+        const filtroDni = document.getElementById("filtroDni");
+        const filtroNombre = document.getElementById("filtroNombre");
+        const filtroCelular = document.getElementById("filtroCelular");
+        const filtroDistrito = document.getElementById("filtroDistrito");
+        const filtroEstado = document.getElementById("filtroEstado");
+
+        const filas = document.querySelectorAll("table tbody tr");
+        // 👇 AGREGA ESTO AQUÍ
+        const params = new URLSearchParams(window.location.search);
+        const estadoURL = params.get("estado");
+
+        // 👉 Solo ocultar si NO viene "Todos"
+        if (estadoURL !== "Todos") {
+            filas.forEach(fila => {
+                fila.style.display = "none";
+            });
+        }
+
+        function filtrarTabla() {
+
+            const dni = filtroDni.value.toLowerCase();
+            const nombre = filtroNombre.value.toLowerCase();
+            const celular = filtroCelular.value;
+            const distrito = filtroDistrito.value.toLowerCase();
+            const estado = filtroEstado.value.trim();
+
+            if (filtroEstado.value === "todos") {
+                filas.forEach(fila => {
+                    fila.style.display = "";
+                });
+                return;
+            }
+
+            filas.forEach(fila => {
+                const dniFila = fila.querySelector(".dni").textContent.toLowerCase();
+                const nombreFila = fila.querySelector(".nombre").textContent.toLowerCase();
+                const celularFila = fila.querySelector(".celular").textContent.toLowerCase();
+                const distritoFila = fila.querySelector(".distrito").textContent.toLowerCase();
+                const estadoFila = (fila.querySelector(".estado")?.dataset.estado || "").trim();
+
+                let mostrar = false;
+
+                // Solo activar si algún filtro tiene 4+ caracteres
+                if (
+                    dni.length >= 4 ||
+                    nombre.length >= 4 ||
+                    celular.length >= 4 ||
+                    distrito.length >= 4 ||
+                    filtroEstado.value !== ""
+                ) {
+                    mostrar = true;
+                }
+
+                // DNI (mínimo 4 caracteres)
+                if (dni.length >= 4 && !dniFila.includes(dni)) {
+                    mostrar = false;
+                }
+
+                // Nombre (mínimo 4 caracteres)
+                if (nombre.length >= 4 && !nombreFila.includes(nombre)) {
+                    mostrar = false;
+                }
+
+                // Nombre (mínimo 4 caracteres)
+                if (celular.length >= 4 && !celularFila.includes(celular)) {
+                    mostrar = false;
+                }
+
+                // Distrito (mínimo 4 caracteres)
+                if (distrito.length >= 4 && !distritoFila.includes(distrito)) {
+                    mostrar = false;
+                }
+
+                // FILTRO ESTADO (inmediato)
+                if (estado !== "" && estadoFila !== estado) {
+                    mostrar = false;
+                }
+
+                fila.style.display = mostrar ? "" : "none";
+            });
+        }
+
+        // Eventos automáticos
+        filtroDni.addEventListener("input", filtrarTabla);
+        filtroNombre.addEventListener("input", filtrarTabla);
+        filtroCelular.addEventListener("input", filtrarTabla);
+        filtroDistrito.addEventListener("input", filtrarTabla);
+       
+
+        filtroEstado.addEventListener("change", () => {
+            const estado = filtroEstado.value;
+
+            console.log("ESTADO SELECCIONADO:", estado);
+
+            // 👉 SOLO si es "Todos" usamos backend
+            if (estado === "Todos") {
+                window.location.href = "/clientes?estado=Todos";
+                return;
+            }
+
+            // 👉 el resto sigue con tu lógica actual
+            filtrarTabla();
+        });
+
+        const filasTabla = document.querySelectorAll("table tbody tr");
+
+        filasTabla.forEach(fila => {
+            fila.addEventListener("click", () => {
+
+                // quitar selección previa
+                filasTabla.forEach(f => f.classList.remove("seleccionada"));
+
+                // agregar a la actual
+                fila.classList.add("seleccionada");
+            });
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
+
+            const btnDetalle = document.getElementById("btnDetalle");
+            const panel = document.getElementById("panelDetalle");
+
+            btnDetalle.addEventListener("click", () => {
+
+                const fila = document.querySelector("tr.seleccionada");
+
+                if (!fila) {
+                    alert("Selecciona un cliente primero");
+                    return;
+                }
+
+                panel.style.display = "block";
+
+                // 👇 CARGAR DATOS
+                document.getElementById("d_dni").value = fila.dataset.dni || "";
+                document.getElementById("d_nombre").value = fila.dataset.nombre || "";
+                document.getElementById("d_apellidos").value = fila.dataset.apellidos || "";
+                document.getElementById("d_correo").value = fila.dataset.correo || "";
+                document.getElementById("d_celular").value = fila.dataset.celular || "";
+                document.getElementById("d_direccion").value = fila.dataset.direccion || "";
+
+            });
+
+        });
+        document.getElementById("btnCancelarDet").addEventListener("click", () => {
+                    document.getElementById("panelDetalle").style.display = "none";
+                });
+        
+    </script>
+
+</body> 
+</html>
