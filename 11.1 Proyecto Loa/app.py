@@ -17,7 +17,11 @@ import psycopg2
         password="1234"
     )'''
 def get_db_connection():
-    return psycopg2.connect(os.environ.get("postgresql://bdloa_user:8fLDqwmSxOfy8bs6SylMkrXqrZBHg5rx@dpg-d79bjmnfte5s739jkf1g-a/bdloa"))
+    return psycopg2.connect(
+        os.environ.get("postgresql://bdloa_user:8fLDqwmSxOfy8bs6SylMkrXqrZBHg5rx@dpg-d79bjmnfte5s739jkf1g-a/bdloa"),
+        sslmode="require"
+    )
+ 
 
 @app.route('/')
 def home():
