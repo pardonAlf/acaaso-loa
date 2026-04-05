@@ -131,7 +131,7 @@ def guardar_cliente():
     if existe:
         cur.close()
         conn.close()
-        return "ERROR: Cliente ya registrado (DNI, correo o celular duplicado)"
+        return "ERROR: Cliente ya registrado (Datos de DNI, correo o celular duplicado)"
 
     # INSERT
     cur.execute("""
