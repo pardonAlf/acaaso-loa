@@ -9,13 +9,13 @@ app.secret_key = "impossible"
 
 import psycopg2
 
-'''def get_db_connection():
-    return psycopg2.connect(
-        host="localhost",
-        database="bdloa",
-        user="postgres",
-        password="1234"
-    )'''
+#'''def get_db_connection():
+#    return psycopg2.connect(
+#        host="localhost",
+#        database="bdloa",
+#        user="postgres",
+#        password="1234"
+#    )'''
 def get_db_connection():
     return psycopg2.connect(
         os.environ.get("postgresql://bdloa_user:8fLDqwmSxOfy8bs6SylMkrXqrZBHg5rx@dpg-d79bjmnfte5s739jkf1g-a/bdloa"),
