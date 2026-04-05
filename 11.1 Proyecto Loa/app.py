@@ -1,5 +1,6 @@
 from flask import Flask, render_template
 import psycopg2
+import os
 from flask import jsonify
 import bcrypt
 
